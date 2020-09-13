@@ -1,0 +1,7 @@
+*.Rproj.user
+*.Rhistory
+*.RData
+*.Ruserdata
+*.pdf
+/Rawdata/inventories1
+/Rawdata/inventories2
