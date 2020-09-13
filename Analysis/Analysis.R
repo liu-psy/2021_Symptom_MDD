@@ -10,6 +10,7 @@ library(patchwork)
 library(reshape2)
 library(stringr)
 
+
 # Set working directory and load data ------------------------------------------
 setwd("E:/WorkingSpace/Project/2021_Symptom_MDD/Analysis")
 data <- read.csv("E:/WorkingSpace/Project/2021_Symptom_MDD/Dataclean/data.csv")
@@ -20,7 +21,7 @@ BDI <- data[, str_detect(names(data), "^BDI")]
 BDI_table <- data.frame(table(rowSums(BDI)))
 BDI_table$Var1 <- as.numeric(as.character(BDI_table$Var1))
 
-cat("\nBDI total score > 10:", sum(rowSums(BDI) > 10))
+cat("\nBDI total score > 10:", sum(rowSums(BDI) > 10), "\n")
 
 ggplot(BDI_table, aes(Var1, Freq, fill = Var1)) +
   geom_bar(stat = "identity", show.legend = FALSE, width = 0.7) + 
@@ -42,12 +43,13 @@ ggsave("Figure3.pdf", width = 15, height = 10)
 # Plot BDI density 
 plot_density <- function(vars) {
   ggdensity(
-    BDI[, vars], 
+    BDI,
+    x = vars, 
     add   = "mean", 
     size  = 2, 
     xlab  = "Value", 
     ylab  = "Density", 
-    title = names(BDI)[vars]
+    title = vars
   ) + 
     theme(
       axis.text  = element_text(size = 15),
@@ -55,17 +57,17 @@ plot_density <- function(vars) {
       title      = element_text(size = 15)
     )
 }
-(p_list <- lapply(seq(BDI), plot_density))
+(p_list <- lapply(names(BDI), plot_density))
 names(p_list) <- paste0("p", seq(BDI))
 with(p_list, p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11 + p12 + 
     p13 + p14 + p15 + p16 + p17 + p18 + p19 + p20 + p21)
 ggsave("Figure4.pdf", width = 15, height = 10)
 
 # Gender test ------------------------------------------------------------------
-# BDI
+# BDI total socre
 fit <- aov(rowSums(BDI) ~ data$Gender)
 summary(fit)
-# DVs
+# DVs and item of BDI
 multi_aov <- function(vars, x) {
   Data <- x
   fit <- aov(x[[vars]] ~ data$Gender)
@@ -75,7 +77,7 @@ sapply(names(DVs), multi_aov, DVs)
 sapply(names(BDI), multi_aov, BDI)
 
 # Factor analysis --------------------------------------------------------------
-# Parallel analysis
+# Parallel analysis with 10000 iterations
 PA <- fa.parallel(DVs, fa = "fa", sim = FALSE, n.iter = 10000, quant = 0.95)
 
 pa_table <- data.frame(t(rbind(PA$fa.values, PA$fa.simr)))
@@ -109,7 +111,7 @@ ggsave("Figure5.pdf", width = 15, height = 9)
 EFA <- fa(DVs, nfactors = 4, rotate = "oblimin", fm = "ml", n.iter = 10000,
   scores = "tenBerge")
 EFA
-cat("Explained variance:", mean(EFA$communality))
+cat("Explained variance:", paste0(round(mean(EFA$communality)*100, 2), "%\n"))
 
 # Hierarchical Clustering of DVs based on loading matrix
 hc <- hclust(dist(scale(EFA$loadings)))

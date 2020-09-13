@@ -40,14 +40,6 @@ data[, 3]
 # Imputed by random forest 
 data <- complete(mice(data, m = 10, method = "rf", seed = 1))
 
-# Regressed out age and gender -------------------------------------------------
-# regressed_age_gender <- function(vars) {
-#   fit <- lm(vars ~ Age + Gender, data = data)
-#   output <- residuals(fit) + coef(fit)[[1]]
-#   return(output)
-# }
-# data[, 4:119] <- apply(data[, 4:119], 2, function(x) regressed_age_gender(x))
-
 # Check and add dimensions of inventories --------------------------------------
 # If the correlation coefficient between sub-dimensions in a inventory exceeds 0.8, 
 # one of the dimensions will be removed arbitrarily
@@ -89,24 +81,12 @@ BDI$BDI_Cognitive_Affection <- rowSums(BDI[, c(1:3, 5:9, 13:14)])
 BDI$BDI_Somatic_Vegetative <- rowSums(BDI[, c(4, 10:12, 15:21)])
 cor(BDI[, c("BDI_Cognitive_Affection", "BDI_Somatic_Vegetative")])
 
-# Emotion Regulation Questionnaire;
-# ERQ <- check_inventories("ERQ")
-# ERQ$ERQ_Cognitive_Reappraisal <- rowSums(ERQ[, c(1, 3, 5, 7:8, 10)])
-# ERQ$ERQ_Expressive_Suppression <- rowSums(ERQ[, c(2, 4, 6, 9)])
-
-# cor(ERQ[, c("ERQ_Cognitive_Reappraisal", "ERQ_Expressive_Suppression")])
-
 # Insomnia Severity Index
 ISI <- check_inventories("ISI")
-
-# PA1 <- fa.parallel(ISI, fa = "both", sim = FALSE, n.iter = 10000, quant = 0.95,
-#   main = "Parallel Analysis")
 ISI$ISI_Sum <- rowSums(ISI)
 
 # Loneliness
 Loneliness <- check_inventories("Loneliness")
-# PA2 <- fa.parallel(Loneliness, fa = "both", sim = FALSE, n.iter = 10000, quant = 0.95,
-#   main = "Parallel Analysis")
 Loneliness$Loneliness_Sum <- rowSums(Loneliness)
 
 # Ruminative Responses Scale, only dimensions
