@@ -39,11 +39,6 @@ BDI <- read.xlsx2("Data.xlsx", sheetIndex = 3, stringsAsFactors = FALSE,
   colClasses = c(rep("character", 9), "numeric", rep("character", 2), rep("numeric", 22)))
 BDI <- integration(BDI, c(1:6, 11:12, 34), 5:25, 1:21)
 
-# Emotion Regulation Questionnaire
-# ERQ <- read.xlsx2("Data.xlsx", sheetIndex = 4, stringsAsFactors = FALSE,
-#   colClass = c(rep("character", 4), rep("numeric", 13)))
-# ERQ <- integration(ERQ, c(3:4, 15:17), 3:12, 1:10)
-
 # Insomnia Severity Index
 ISI <- read.xlsx2("Data.xlsx", sheetIndex = 5, stringsAsFactors = FALSE,
   colClasses = c(rep("character", 8), rep("numeric", 8)))
@@ -78,7 +73,7 @@ extra_information[sapply(apply(extra_information, 1, unique), length) > 3, ]
 data <- subset(data, Number != 15361, select = -c(Gender.y, Gender)) 
 data <- data[, !str_detect(names(data), "^Name")] 
 
-cat("\n452 partcipants were included for further analysis\n")
+cat(nrow(data), "partcipants were included for further analysis\n")
 # Modify variables -------------------------------------------------------------
 data <- data %>% select(Gender.x, Number, Age, everything()) %>% 
   rename(Gender = Gender.x)

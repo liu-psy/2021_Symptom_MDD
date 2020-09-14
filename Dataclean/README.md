@@ -1,5 +1,5 @@
 # This script was used for data clean #
-8 inventories.
+7 inventories.
 ## Inventories ##
 **ATQ**: Automatic Thoughts Questionnaire; 30 items; range:1-5
 

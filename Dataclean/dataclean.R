@@ -118,6 +118,8 @@ BDI_scaled <- scale(rowSums(BDI[, 1:21]))
 data <- data[abs(BDI_scaled) < 3, ]
 DVs <- DVs[abs(BDI_scaled) < 3, ]
 
+cat(nrow(data), "partcipants were included for further analysis\n")
+
 # Plot correlation matrix of DVs
 ggcorrplot(
   cor(DVs), 
