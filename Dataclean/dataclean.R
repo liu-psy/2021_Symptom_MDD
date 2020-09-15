@@ -13,7 +13,7 @@ library(ggplot2)
 # Set working directory and load data ------------------------------------------
 setwd("E:/WorkingSpace/Project/2021_Symptom_MDD/Dataclean")
 
-data <- read.csv("RawData.csv")
+data <- read.csv("E:/WorkingSpace/Project/2021_Symptom_MDD/Rawdata/RawData.csv")
 data$Gender <- factor(data$Gender, levels = 0:1, labels = c("Female", "Male"))
 
 # Preprocessing ----------------------------------------------------------------
